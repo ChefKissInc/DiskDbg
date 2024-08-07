@@ -1,0 +1,39 @@
+name: Run clippy and build
+
+on:
+  push:
+    branches: [master, staging, trying]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: "19 2 * * 4"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  clippy:
+    name: Lints
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt, clippy
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy
+
+  build:
+    name: Build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: x86_64-apple-darwin, aarch64-apple-darwin
+      - run: cargo install universal2
+      - run: sh ./BuildPackage.sh
+      - uses: actions/upload-artifact@v4.3.5
+        with:
+          name: macOS Universal Release
+          path: target/DiskDbg.pkg
