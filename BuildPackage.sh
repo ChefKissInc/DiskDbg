@@ -1,5 +1,6 @@
 #! /bin/bash
 
+mkdir -p Package/Payload/Library/Scripts
 rm -rf target/DiskDbg.pkg Package/Payload/Library/Scripts/disk-dbg
 universal2
 cp target/universal2-apple-darwin/release/disk-dbg Package/Payload/Library/Scripts/
