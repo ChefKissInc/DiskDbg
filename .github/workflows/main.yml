@@ -33,7 +33,7 @@ jobs:
           targets: x86_64-apple-darwin, aarch64-apple-darwin
       - run: cargo install universal2
       - run: sh ./BuildPackage.sh
-      - uses: actions/upload-artifact@v4.3.6
+      - uses: actions/upload-artifact@v4.4.0
         with:
           name: macOS Universal Release
           path: target/DiskDbg.pkg
