@@ -8,4 +8,3 @@ strip = true
 lto = true
 
 [dependencies]
-time = { version = "0.3.37", features = ["formatting", "local-offset"] }
