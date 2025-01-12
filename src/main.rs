@@ -42,13 +42,47 @@ fn main() {
         })
     };
 
-    let ioreg_loop = std::thread::spawn(move || {
+    let ioreg_loop = {
+        let timestamp = timestamp.clone();
+        let header_template = header_template.clone();
+
+        std::thread::spawn(move || {
+            let mut file =
+                std::fs::File::create(format!("/Library/Logs/ioreg-{timestamp}.txt")).unwrap();
+
+            loop {
+                let Ok(output) = Command::new("ioreg").args(["-w0", "-flx"]).output() else {
+                    eprintln!("warning: failed to execute `ioreg -w0 -flx` command");
+                    continue;
+                };
+                let buf_reader = BufReader::new(&file);
+                if buf_reader.buffer() == output.stdout {
+                    continue;
+                }
+                file.seek(std::io::SeekFrom::Start(0)).unwrap();
+                file.write_all(
+                    &header_template
+                        .replace("!CMDLINE", "ioreg -w0 -flx")
+                        .into_bytes(),
+                )
+                .unwrap();
+                file.write_all(&output.stdout).unwrap();
+                file.sync_all().unwrap();
+                std::thread::sleep(Duration::from_millis(10));
+            }
+        })
+    };
+
+    let agdcdiagnose_loop = std::thread::spawn(move || {
         let mut file =
-            std::fs::File::create(format!("/Library/Logs/ioreg-{timestamp}.txt")).unwrap();
+            std::fs::File::create(format!("/Library/Logs/AGDCDiagnose-{timestamp}.txt")).unwrap();
 
         loop {
-            let Ok(output) = Command::new("ioreg").args(["-w0", "-flx"]).output() else {
-                eprintln!("warning: failed to execute `ioreg -w0 -flx` command");
+            let Ok(output) = Command::new(
+                "/System/Library/Extensions/AppleGraphicsControl.kext/Contents/MacOS/AGDCDiagnose",
+            )
+            .output() else {
+                eprintln!("warning: failed to execute `/System/Library/Extensions/AppleGraphicsControl.kext/Contents/MacOS/AGDCDiagnose` command");
                 continue;
             };
             let buf_reader = BufReader::new(&file);
@@ -58,7 +92,7 @@ fn main() {
             file.seek(std::io::SeekFrom::Start(0)).unwrap();
             file.write_all(
                 &header_template
-                    .replace("!CMDLINE", "ioreg -w0 -flx")
+                    .replace("!CMDLINE", "/System/Library/Extensions/AppleGraphicsControl.kext/Contents/MacOS/AGDCDiagnose")
                     .into_bytes(),
             )
             .unwrap();
@@ -70,4 +104,5 @@ fn main() {
 
     dmesg_loop.join().unwrap();
     ioreg_loop.join().unwrap();
+    agdcdiagnose_loop.join().unwrap();
 }
