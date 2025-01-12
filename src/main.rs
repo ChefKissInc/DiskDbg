@@ -4,7 +4,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 fn main() {
-    let date = Command::new("date").output().unwrap();
+    let date = Command::new("date").arg("-Iseconds").output().unwrap();
     assert!(date.status.success());
     let date = String::from_utf8(date.stdout).unwrap();
     let header_template = Arc::new(format!(
