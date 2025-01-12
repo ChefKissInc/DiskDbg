@@ -7,7 +7,10 @@ fn main() {
     let date = Command::new("date").output().unwrap();
     assert!(date.status.success());
     let date = String::from_utf8(date.stdout).unwrap();
-    let header_template = Arc::new(format!("Command: !CMDLINE\nDate: {}\n\n", date.trim()));
+    let header_template = Arc::new(format!(
+        "Command: !CMDLINE\nDate: {}\n#######################################################\n\n",
+        date.trim()
+    ));
 
     let timestamp = Command::new("date").arg("+%s").output().unwrap();
     assert!(timestamp.status.success());
