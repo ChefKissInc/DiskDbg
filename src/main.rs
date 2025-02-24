@@ -39,7 +39,10 @@ fn cmd_loop(program: &str, args: &[&str], date: &str, timestamp: &str) -> ! {
 }
 
 fn main() {
-    let date = Command::new("date").arg("-Iseconds").output().unwrap();
+    let date = Command::new("date")
+        .arg("+\"%Y-%m-%dT%H:%M:%S%z\"")
+        .output()
+        .unwrap();
     assert!(date.status.success());
     let date = Arc::new(String::from_utf8(date.stdout).unwrap());
 
