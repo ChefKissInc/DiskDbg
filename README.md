@@ -4,9 +4,19 @@ A utility that captures the `dmesg`, `ioreg` and `AGDCDiagnose` of a system in r
 
 You can get a build from the GitHub Actions tab. Or click [here](https://nightly.link/ChefKissInc/DiskDbg/workflows/main/master/macOS%20Universal%20Release.zip) for a quick download.
 
-All you need to do is install the package.
+## Usage guide
 
-The service is always active, dumping logs. To disable, run the following command:
+Install the package.
+
+To enable, run the following command:
+
+```sh
+launchctl load -w /Library/LaunchDaemons/com.ChefKiss.DiskDbg.plist
+```
+
+The service will constantly gather logs in the background. Leave enabled only during debugging.
+
+To disable, run the following command:
 
 ```sh
 launchctl unload -w /Library/LaunchDaemons/com.ChefKiss.DiskDbg.plist

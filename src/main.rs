@@ -33,7 +33,8 @@ fn cmd_loop(program: &str, args: &[&str], date: &str, timestamp: &str) -> ! {
         file.seek(std::io::SeekFrom::Start(0)).unwrap();
         file.write_all(header.as_bytes()).unwrap();
         file.write_all(&output.stdout).unwrap();
-        file.sync_all().unwrap();
+        let _ = file.flush();
+        let _ = file.sync_data();
         std::thread::sleep(Duration::from_millis(10));
     }
 }
