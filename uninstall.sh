@@ -14,6 +14,6 @@ fi
 if [ -e "/Library/LaunchDaemons/org.ChefKiss.DiskDbg.plist" ]; then
     launchctl unload -w /Library/LaunchDaemons/org.ChefKiss.DiskDbg.plist
     rm /Library/LaunchDaemons/org.ChefKiss.DiskDbg.plist
-    rm /Library/Application\ Support/org.ChefKiss.DiskDbg/DiskDbg
+    rm -r /Library/Application\ Support/org.ChefKiss.DiskDbg
     pkgutil --forget org.ChefKiss.DiskDbg
 fi
