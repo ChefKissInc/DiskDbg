@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.ChefKiss.DiskDbg</string>
+	<string>org.ChefKiss.DiskDbg</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Library/Scripts/disk-dbg</string>
+        <string>/Library/Application Support/org.ChefKiss.DiskDbg/DiskDbg</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

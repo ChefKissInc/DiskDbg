@@ -1,8 +1,0 @@
-#!/bin/bash
-
-chown root:wheel /Library/LaunchDaemons/com.ChefKiss.DiskDbg.plist
-chmod 644 /Library/LaunchDaemons/com.ChefKiss.DiskDbg.plist
-chown root:wheel /Library/Scripts/disk-dbg
-chmod 755 /Library/Scripts/disk-dbg
-
-exit 0
