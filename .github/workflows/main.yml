@@ -15,6 +15,7 @@ jobs:
     runs-on: macos-latest
     permissions:
       contents: write
+      discussions: write
     steps:
       - uses: actions/checkout@v7
       - run: ./build.sh
